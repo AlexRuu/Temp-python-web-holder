@@ -1,0 +1,15 @@
+textarea {
+  min-height: 400px;
+}
+
+.email-wrapper {
+  display: grid;
+  grid-template-columns: 15% 70% 15%;
+  border: 1px black solid;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-top: 8px;
+  justify-content: center;
+  align-content: center;
+  text-align: left;
+}

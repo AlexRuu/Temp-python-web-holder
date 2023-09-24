@@ -1,0 +1,76 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+{{listing.title}}
+{% endblock %}
+
+
+{% block body %}
+{% if status %}
+{% if top_bidder == user %}
+<h1>Congratulations, this listing has been closed and you have won the item!</h1>
+{% else %}
+<h1>This listing is now closed.</h1>
+{% endif %}
+{% endif %}
+<div class="listing">
+    <img src="{{listing.image}}" alt="" width="500">
+    <div class="description">
+        <h2>{{listing.title}}</h2>
+        <p>Starting price: {{listing.price}}</p>
+        <br />
+        <p>{{listing.description}}</p>
+    </div>
+</div>
+{% if not status %}
+<div class="bidding">
+    {% if highest_bid == None %}
+    <h6>No bids yet</h6>
+    {% else %}
+    <h6>Current highest bid: ${{highest_bid}}</h6>
+    {% endif %}
+    {% if user.is_authenticated %}
+    <form action="{% url 'listing' listing.id %}" method="post">
+        {% csrf_token %}
+        {{bid_form}}
+        <input type="submit" value="Bid">
+    </form>
+    {% endif %}
+    {% if listing.id not in watchlist %}
+    <form action="{% url 'add_watchlist' listing.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Add to Watchlist">
+    </form>
+    {% else %}
+    <form action="{% url 'add_watchlist' listing.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Remove From Watchlist">
+    </form>
+    {% endif %}
+    {% if owner %}
+    <form action="{% url 'close' listing.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Close Auction">
+    </form>
+    {% endif %}
+    {% if user.is_authenticated %}
+    <form action="{% url 'comment' listing.id %}" method="post">
+        {% csrf_token %}
+        {{comment_form}}
+        <input type="submit">
+    </form>
+    {% endif %}
+    {% for comment in comments %}
+    <div class="comment-container">
+        <div>
+            {{comment.user}}
+            {{comment.time}}
+        </div>
+        <div>
+            {{comment.comment}}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

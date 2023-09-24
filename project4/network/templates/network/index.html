@@ -1,0 +1,23 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<div class="user-container">
+</div>
+<div class="post-container">
+    <div class="create">
+        <h1>All Posts</h1>
+        {% if user.is_authenticated %}
+        <div class="form-group">
+            <label for="post">New Post</label>
+            <form id="new-post-form">
+                {% csrf_token %}
+                <textarea name="post" id="new-post" cols="50" rows="3"></textarea>
+                <input type="submit" class="btn btn-primary">
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    <div class="all-posts">
+    </div>
+</div>
+{% endblock %}
